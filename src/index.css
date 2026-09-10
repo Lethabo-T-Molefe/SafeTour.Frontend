@@ -1,0 +1,5 @@
+/* Global stylesheet entrypoint: Tailwind + project design tokens. */
+@import "tailwindcss";
+
+@import "./styles/variables.css";
+@import "./styles/custom.css";
