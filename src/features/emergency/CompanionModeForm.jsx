@@ -50,7 +50,7 @@ export default function CompanionModeForm({ onStarted }) {
 
   return (
     <Card title="Companion mode">
-      <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-2 text-sm">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
         <input className="rounded border border-slate-700 bg-slate-950 px-2 py-1.5" placeholder="Origin lon" value={form.originLon} onChange={setField('originLon')} />
         <input className="rounded border border-slate-700 bg-slate-950 px-2 py-1.5" placeholder="Origin lat" value={form.originLat} onChange={setField('originLat')} />
         <input className="rounded border border-slate-700 bg-slate-950 px-2 py-1.5" placeholder="Destination lon" value={form.destinationLon} onChange={setField('destinationLon')} />

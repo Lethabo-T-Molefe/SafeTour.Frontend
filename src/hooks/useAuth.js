@@ -4,17 +4,28 @@
  */
 import { useCallback } from 'react'
 import * as authService from '../services/authService'
+import * as profileService from '../services/profileService'
 import { useStore } from '../store'
 
 export const useAuth = () => {
   const { state, dispatch } = useStore()
 
+  // Populates state.auth.profile (persona etc.) so nav chrome that depends
+  // on it — the admin sidebar/rail entry and the mobile admin shortcut —
+  // actually has something to read instead of staying null forever.
+  const loadProfile = useCallback(async () => {
+    const profile = await profileService.fetchMyProfile()
+    dispatch({ type: 'auth/profileLoaded', payload: profile })
+    return profile
+  }, [dispatch])
+
   const login = useCallback(
     async (email, password) => {
       await authService.login({ email, password })
       dispatch({ type: 'auth/loggedIn', payload: { email } })
+      await loadProfile().catch(() => {})
     },
-    [dispatch]
+    [dispatch, loadProfile]
   )
 
   const register = useCallback(async (email, password, consent) => {
@@ -26,5 +37,5 @@ export const useAuth = () => {
     dispatch({ type: 'auth/loggedOut' })
   }, [dispatch])
 
-  return { ...state.auth, login, register, logout }
+  return { ...state.auth, login, register, logout, loadProfile }
 }

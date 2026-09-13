@@ -3,7 +3,7 @@ import Alert from '../../components/feedback/Alert'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
 import Loader from '../../components/feedback/Loader'
-import { PERSONAS, TRANSPORT_MODES } from '../../constants/site'
+import { LANGUAGES, PERSONAS, TRANSPORT_MODES } from '../../constants/site'
 import { useToast } from '../../hooks/useToast'
 import * as profileService from '../../services/profileService'
 import { useMyProfile, useUpdatePreferences } from './useProfile'
@@ -44,6 +44,7 @@ export default function ProfileForm() {
         transport_modes: form.transport_modes,
         mobility_needs: form.mobility_needs || null,
         heightened_safety: form.heightened_safety,
+        preferred_language: form.preferred_language,
       })
       toast('Preferences saved.', 'success')
     } catch {
@@ -119,6 +120,25 @@ export default function ProfileForm() {
             onChange={(event) => setForm({ ...form, heightened_safety: event.target.checked })}
           />
           Heightened-safety setting
+        </label>
+
+        <label className="block">
+          Language
+          <select
+            className="mt-1 w-full rounded border border-slate-700 bg-slate-950 px-2 py-1.5"
+            value={form.preferred_language}
+            onChange={(event) => setForm({ ...form, preferred_language: event.target.value })}
+          >
+            {LANGUAGES.map((language) => (
+              <option key={language.value} value={language.value}>{language.label}</option>
+            ))}
+          </select>
+          {form.preferred_language !== 'en' && (
+            <p className="mt-1 text-xs text-slate-500">
+              This sets your preference for the assistant and future translated screens — the interface itself is
+              English-only for now.
+            </p>
+          )}
         </label>
 
         <div className="flex flex-wrap gap-2 pt-2">

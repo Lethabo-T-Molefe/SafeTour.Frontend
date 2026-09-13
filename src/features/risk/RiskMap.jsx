@@ -6,6 +6,8 @@ import * as geoService from '../../services/geoService'
 import * as riskService from '../../services/riskService'
 import Alert from '../../components/feedback/Alert'
 import Loader from '../../components/feedback/Loader'
+import { useLastSynced } from '../../hooks/useLastSynced'
+import { formatTimestamp } from '../../utils/dateHelpers'
 import RiskBadge from './RiskBadge'
 
 function ClickToCheckRisk({ timeBand, onResult, onError }) {
@@ -23,11 +25,12 @@ function ClickToCheckRisk({ timeBand, onResult, onError }) {
   return null
 }
 
-export default function RiskMap({ timeBand, height = 480 }) {
+export default function RiskMap({ timeBand }) {
   const [loading, setLoading] = useState(true)
   const [features, setFeatures] = useState([])
   const [selected, setSelected] = useState(null)
   const [error, setError] = useState(null)
+  const { lastSyncedAt, stale, markSynced } = useLastSynced('risk-heatmap', 15)
 
   useEffect(() => {
     let cancelled = false
@@ -50,6 +53,7 @@ export default function RiskMap({ timeBand, height = 480 }) {
             },
           }))
         )
+        markSynced()
       } catch {
         if (!cancelled) setError('Could not load the risk layer. The map still works — try again shortly.')
       } finally {
@@ -60,6 +64,7 @@ export default function RiskMap({ timeBand, height = 480 }) {
     return () => {
       cancelled = true
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeBand])
 
   const geojson = useMemo(() => ({ type: 'FeatureCollection', features }), [features])
@@ -71,7 +76,7 @@ export default function RiskMap({ timeBand, height = 480 }) {
 
   return (
     <div className="space-y-2">
-      <div style={{ height }} className="overflow-hidden rounded-lg border border-slate-800">
+      <div className="h-[340px] overflow-hidden rounded-lg border border-slate-800 sm:h-[420px] lg:h-[520px]">
         <MapContainer center={[DEFAULT_MAP_CENTER.lat, DEFAULT_MAP_CENTER.lon]} zoom={12} className="h-full w-full">
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -84,6 +89,12 @@ export default function RiskMap({ timeBand, height = 480 }) {
 
       {loading && <Loader label="Loading the precinct risk layer…" />}
       {error && <Alert message={error} severity="warning" />}
+      {!loading && !error && stale && lastSyncedAt && (
+        <Alert
+          message={`Showing data last refreshed ${formatTimestamp(lastSyncedAt)} — reconnect to update it.`}
+          severity="warning"
+        />
+      )}
 
       {selected && (
         <div className="flex flex-wrap items-center gap-2 rounded-lg border border-slate-800 bg-slate-900 p-3 text-sm">

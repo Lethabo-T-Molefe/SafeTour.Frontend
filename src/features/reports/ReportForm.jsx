@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Button from '../../components/ui/Button'
+import PrecinctSelect from '../../components/ui/PrecinctSelect'
 import { useToast } from '../../hooks/useToast'
-import PrecinctSelect from './PrecinctSelect'
 import { useSubmitReport } from './useReports'
 
 const REPORT_TYPES = [

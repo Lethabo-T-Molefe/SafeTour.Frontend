@@ -66,5 +66,6 @@ export const ENDPOINTS = {
     MODERATE_REPORT: (reportId) => `/admin/reports/${reportId}/moderate`,
     AUDIT_LOG: '/admin/audit-log',
     PURGE_EXPIRED: '/admin/purge-expired',
+    POWER_STATUS: '/admin/power-status',
   },
 }

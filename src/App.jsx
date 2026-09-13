@@ -1,7 +1,9 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import RequireAuth from './components/RequireAuth'
 import ToastStack from './components/feedback/ToastStack'
 import { ROUTES } from './constants/routes'
+import { useAuth } from './hooks/useAuth'
 import AdminPage from './pages/AdminPage'
 import EmergencyPage from './pages/EmergencyPage'
 import HomePage from './pages/HomePage'
@@ -16,6 +18,18 @@ import ReportsPage from './pages/ReportsPage'
 import RoutePlannerPage from './pages/RoutePlannerPage'
 
 function App() {
+  const { isAuthenticated, profile, loadProfile } = useAuth()
+
+  // Covers a returning session (token already in localStorage on page load)
+  // where login() never ran this tick, so the store's profile would
+  // otherwise stay null and the admin nav entries would never appear.
+  useEffect(() => {
+    if (isAuthenticated && !profile) {
+      loadProfile().catch(() => {})
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated])
+
   return (
     <BrowserRouter>
       <ToastStack />

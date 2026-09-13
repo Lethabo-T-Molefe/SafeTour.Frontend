@@ -15,6 +15,7 @@ safety-aware mobility and daily-decision platform described in
 | Routing | React Router DOM 7 |
 | Map | Leaflet + React-Leaflet (OpenStreetMap tiles) |
 | HTTP | Axios |
+| PWA | `vite-plugin-pwa` — installable, offline-caches reference/risk data |
 
 ## Project structure
 
@@ -64,6 +65,26 @@ npm run dev
 - Requires `SafeTour.Backend` running (see its README) for anything beyond
   the static pages — every data-fetching component degrades to a visible
   error/empty state rather than hanging if the API is unreachable.
+
+## Offline and language (FR-LOC-1/2)
+
+The service worker (`vite.config.js`'s `VitePWA` block) caches the app
+shell for installability and runtime-caches `GET /api/v1/geo/*` and
+`/risk/*` (NetworkFirst, 1-day max age), so the map and reports still
+render from the last successful load when offline. `hooks/useOnlineStatus.js`
+drives a global "you're offline" banner (`AppShell`), and
+`hooks/useLastSynced.js` drives the risk map's staleness notice — together
+these are FR-LOC-2's "data-light mode and offline cache with a staleness
+notice."
+
+The profile page's language selector (`constants/site.js`'s `LANGUAGES`,
+matching the backend's `SUPPORTED_LANGUAGES`) persists a real preference via
+`PUT /users/me/preferences`, used by the assistant and by any future
+translated screens. **The interface itself is English-only right now** —
+this is infrastructure for FR-LOC-1, not a claim that isiZulu/isiXhosa/
+Sesotho/Setswana translations exist yet. Adding them needs a native-speaker
+review before shipping real UI strings, which is out of scope for this
+initial repository.
 
 ## Scripts
 

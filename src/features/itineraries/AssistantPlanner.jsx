@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Badge from '../../components/ui/Badge'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
 import Loader from '../../components/feedback/Loader'
@@ -40,7 +41,10 @@ export default function AssistantPlanner() {
       {loading && <Loader label="Thinking…" />}
       {result && (
         <div className="mt-3 space-y-2 text-sm">
-          <p className="text-slate-200">{result.reply_text}</p>
+          <div className="flex items-center gap-2">
+            <p className="text-slate-200">{result.reply_text}</p>
+            <Badge status={result.used_llm ? 'success' : 'info'}>{result.used_llm ? 'AI-assisted' : 'keyword match'}</Badge>
+          </div>
           <Link to={ROUTES.ITINERARY_DETAIL(result.itinerary.id)} className="text-emerald-400 hover:underline">
             View the generated itinerary →
           </Link>

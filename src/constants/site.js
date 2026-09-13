@@ -9,13 +9,19 @@ export const SITE = {
   copyright: `© ${new Date().getFullYear()} SafeTour AI Sentinel. Guidance is relative and advisory — it is never a safety guarantee.`,
 }
 
+// Single source of truth for primary nav — used by the desktop sidebar, the
+// tablet icon rail and the phone bottom-tab bar so the three device-specific
+// chrome variants can never drift out of sync with each other.
 export const NAV_LINKS = [
-  { label: 'Map', path: '/map' },
-  { label: 'Plan a route', path: '/routes' },
-  { label: 'Itineraries', path: '/itineraries' },
-  { label: 'Reports', path: '/reports' },
-  { label: 'Emergency', path: '/emergency' },
+  { label: 'Map', path: '/map', icon: 'map' },
+  { label: 'Routes', path: '/routes', icon: 'route' },
+  { label: 'Itineraries', path: '/itineraries', icon: 'itinerary' },
+  { label: 'Reports', path: '/reports', icon: 'report' },
+  { label: 'Emergency', path: '/emergency', icon: 'emergency' },
 ]
+
+export const PROFILE_LINK = { label: 'Profile', path: '/profile', icon: 'profile' }
+export const ADMIN_LINK = { label: 'Admin', path: '/admin', icon: 'admin' }
 
 export const PERSONAS = [
   { value: 'commuter', label: 'Commuter' },
@@ -26,6 +32,19 @@ export const PERSONAS = [
   { value: 'newcomer_student', label: 'Newcomer or student' },
   { value: 'inbound_visitor', label: 'Inbound visitor' },
   { value: 'administrator', label: 'Administrator' },
+]
+
+// FR-LOC-1: matches the backend's SUPPORTED_LANGUAGES. Only English strings
+// are actually translated anywhere in this UI today — selecting another
+// language here records the *preference* (used by /assistant/plan and any
+// future translated UI) without pretending the interface is translated yet.
+export const LANGUAGES = [
+  { value: 'en', label: 'English' },
+  { value: 'af', label: 'Afrikaans' },
+  { value: 'zu', label: 'isiZulu' },
+  { value: 'xh', label: 'isiXhosa' },
+  { value: 'st', label: 'Sesotho' },
+  { value: 'tn', label: 'Setswana' },
 ]
 
 export const TRANSPORT_MODES = [

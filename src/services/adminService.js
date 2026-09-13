@@ -49,3 +49,12 @@ export const purgeExpiredData = async () => {
   const { data } = await api.post(ENDPOINTS.ADMIN.PURGE_EXPIRED)
   return data
 }
+
+export const setPowerStatus = async ({ precinctId, activeOutage, source = 'manual' }) => {
+  const { data } = await api.post(ENDPOINTS.ADMIN.POWER_STATUS, {
+    precinct_id: precinctId,
+    active_outage: activeOutage,
+    source,
+  })
+  return data
+}

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import CurvedLoop from '../components/CurvedLoop'
+import BottomNav from '../components/layout/BottomNav'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import { ROUTES } from '../constants/routes'
@@ -14,8 +15,8 @@ export default function HomePage() {
       <Navbar />
       <div className="flex-1">
         <CurvedLoop marqueeText={`${SITE.tagline} `} speed={2} />
-        <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-6 pb-16">
-          <h1 className="text-3xl font-bold">Welcome to {SITE.name}</h1>
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 pb-16 sm:px-6">
+          <h1 className="text-2xl font-bold sm:text-3xl">Welcome to {SITE.name}</h1>
           <p className="max-w-2xl text-sm text-slate-300">
             {SITE.name} joins official crime data, contextual signals and moderated community reports into
             relative risk estimates for South Africa — used for safety-aware routing, itinerary planning and
@@ -38,6 +39,7 @@ export default function HomePage() {
         </div>
       </div>
       <Footer />
+      <BottomNav />
     </div>
   )
 }

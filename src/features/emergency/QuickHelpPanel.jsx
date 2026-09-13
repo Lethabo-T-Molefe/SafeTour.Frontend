@@ -41,7 +41,7 @@ export default function QuickHelpPanel() {
 
   return (
     <Card title="Emergency numbers and nearest safe points">
-      <ul className="grid grid-cols-2 gap-2 text-sm">
+      <ul className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
         {Object.entries(numbers).map(([label, number]) => (
           <li key={label} className="rounded bg-slate-800/60 px-2 py-1.5">
             <span className="block text-xs text-slate-400">{label}</span>
